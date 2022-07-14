@@ -259,6 +259,7 @@ class GithubAPI:
                 body
                 state
                 createdAt
+                closedAt
                 mergedAt
                 author {
                   login
@@ -629,6 +630,20 @@ class GithubAPI:
                 )
             except Exception:
                 logger.warning(f"Error parsing comment, skipping: {c}", exc_info=True)
+        
+        # Handle closed date
+        closed_str = i["mergedAt"] if is_pull_request else i["closedAt"]
+        
+        if is_pull_request and closed_str is None and i["closedAt"] is not None:
+            # Handle the case that PR was closed instead of Merged
+            closed_str = i["closedAt"]
+            closed_date = dateutil_parse(closed_str)
+        elif closed_str is None:
+            # If it's not been closed/merged, just take empty string
+            closed_date = ""
+        else:
+            closed_date = dateutil_parse(closed_str)
+
         return GithubIssue(
             pull_request=is_pull_request,
             user_login=i["author"]["login"] if i.get("author") else "(unknown)",
@@ -641,7 +656,7 @@ class GithubAPI:
             number=i["number"],
             title=i["title"],
             created_at=dateutil_parse(i["createdAt"]),
-            closed_at=dateutil_parse(i["mergedAt"]) if is_pull_request else dateutil_parse(i["closedAt"]),
+            closed_at=closed_date,
             url=i["url"],
             label_names=[node["name"] for node in i["labels"]["nodes"]],
             comments=comments,

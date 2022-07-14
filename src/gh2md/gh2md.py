@@ -770,7 +770,7 @@ def format_issue_to_markdown(issue: GithubIssue) -> Tuple[str, str]:
         check_status = "- [ ] "
         done_status = ""
     
-    open_date = "📅 {}".format(issue.created_at.strftime("%Y-%m-%d"))
+    open_date = "🛫 {}".format(issue.created_at.strftime("%Y-%m-%d"))
 
     formatted_issue = templates_markdown.ISSUE.format(
         title=issue.title,

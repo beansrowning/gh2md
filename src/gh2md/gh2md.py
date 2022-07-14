@@ -750,12 +750,12 @@ def format_issue_to_markdown(issue: GithubIssue) -> Tuple[str, str]:
 
     if issue.state in ['closed', 'merged']:
         check_status = "- [x] "
-        done_status = "✅ {}".format(closed_at.strftime("%Y-%m-%d"))
+        done_status = "✅ {}".format(issue.closed_at.strftime("%Y-%m-%d"))
     else:
         check_status = "- [ ] "
         done_status = ""
     
-    open_date = "📅 {}".format(created_at.strftime("%Y-%m-%d"))
+    open_date = "📅 {}".format(issue.created_at.strftime("%Y-%m-%d"))
 
     formatted_issue = templates_markdown.ISSUE.format(
         title=issue.title,

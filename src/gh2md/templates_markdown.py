@@ -26,5 +26,5 @@ COMMENT = r"""#### <img src="{avatar_url}" width="50">[{author}]({author_url}) c
 ISSUE_FILE_FOOTNOTE = r"""
 [[{repo_name}]]
 
-[Export of Github issue for [{repo_name}]({repo_url}).{datestring}]
+Export of Github issue for [{repo_name}]({repo_url})
 """

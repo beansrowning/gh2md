@@ -2,6 +2,7 @@
 # coding: utf-8
 import argparse
 import datetime
+from genericpath import exists
 import logging
 import os
 import pprint
@@ -79,6 +80,7 @@ class GithubIssue:
     label_names: List[str]
     title: str
     created_at: datetime.datetime
+    closed_at: datetime.datetime
     url: str
 
 
@@ -207,6 +209,7 @@ class GithubAPI:
                 body
                 state
                 createdAt
+                closedAt
                 author {
                   login
                   url
@@ -256,6 +259,7 @@ class GithubAPI:
                 body
                 state
                 createdAt
+                mergedAt
                 author {
                   login
                   url
@@ -637,6 +641,7 @@ class GithubAPI:
             number=i["number"],
             title=i["title"],
             created_at=dateutil_parse(i["createdAt"]),
+            closed_at=dateutil_parse(i["mergedAt"]) if is_pull_request else dateutil_parse(i["closedAt"]),
             url=i["url"],
             label_names=[node["name"] for node in i["labels"]["nodes"]],
             comments=comments,
@@ -743,6 +748,15 @@ def format_issue_to_markdown(issue: GithubIssue) -> Tuple[str, str]:
         labels = ", ".join(["`{}`".format(lab) for lab in issue.label_names])
         labels = "**Labels**: {}\n\n".format(labels)
 
+    if issue.state in ['closed', 'merged']:
+        check_status = "- [x] "
+        done_status = "✅ {}".format(closed_at.strftime("%Y-%m-%d"))
+    else:
+        check_status = "- [ ] "
+        done_status = ""
+    
+    open_date = "📅 {}".format(created_at.strftime("%Y-%m-%d"))
+
     formatted_issue = templates_markdown.ISSUE.format(
         title=issue.title,
         date=issue.created_at.strftime("%Y-%m-%d %H:%M"),
@@ -755,6 +769,9 @@ def format_issue_to_markdown(issue: GithubIssue) -> Tuple[str, str]:
         body=issue.body,
         comments=formatted_comments,
         labels=labels,
+        check_status=check_status,
+        open_date=open_date,
+        done_status=done_status
     )
     slug = ".".join(
         [

@@ -811,7 +811,7 @@ def main():
                 )
         else:
             logger.info(f"Creating output directory: {args.output_path}")
-            os.makedirs(args.output_path, exists_ok=True)
+            os.makedirs(args.output_path, exist_ok=True)
 
     gh = GithubAPI(token=get_environment_token())
     repo = gh.fetch_and_decode_repository(

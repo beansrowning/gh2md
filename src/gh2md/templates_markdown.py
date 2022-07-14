@@ -8,8 +8,7 @@ ISSUE = r"""# [\#{number}]({url}) `{state}`: {title}
 #### <img src="{avatar_url}" width="50">[{author}]({author_url}) opened issue at [{date}]({url}):
 
 #### Task
-{check_status} #task #gh-automated {title} {open_date} {done_status}
-
+{check_status} #task #gh-automated [#{number}: {title}]({url}) {open_date} {done_status}
 
 {body}
 

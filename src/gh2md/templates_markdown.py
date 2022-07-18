@@ -3,7 +3,11 @@ BASE = r"""Export of Github issues for [{repo_name}]({repo_url}).{datestring}
 {issues}
 """
 
-ISSUE = r"""# [\#{number}]({url}) `{state}`: {title}
+ISSUE = r"""---
+gh-ingest-type: ["{slug}"]
+gh-ingest-status: ["{state}"]
+---
+# [\#{number}]({url}) `{state}`: {title}
 {labels}
 #### <img src="{avatar_url}" width="50">[{author}]({author_url}) opened issue on [[{date}]]:
 

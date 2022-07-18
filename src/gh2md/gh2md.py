@@ -776,6 +776,7 @@ def format_issue_to_markdown(issue: GithubIssue) -> Tuple[str, str]:
         title=issue.title,
         date=issue.created_at.strftime("%Y-%m-%d"),
         number=number,
+        slug=slugtype,
         url=issue.url,
         author=issue.user_login,
         author_url=issue.user_url,

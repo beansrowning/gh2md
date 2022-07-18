@@ -791,9 +791,7 @@ def format_issue_to_markdown(issue: GithubIssue) -> Tuple[str, str]:
     slug = ".".join(
         [
             issue.created_at.strftime("%Y-%m-%d"),
-            str(issue.number),
-            slugtype,
-            issue.state,
+            str(issue.number)
         ]
     )
     return slug, formatted_issue.replace("\r", "")
